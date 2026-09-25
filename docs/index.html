@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="ProsodyMLM: streaming multimodal commentary generation with prosody grounded in visual events and environmental sound.">
+  <meta name="keywords" content="ProsodyMLM, prosody, speech generation, multimodal, streaming, sports commentary">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ProsodyMLM: Prosody Multi-modal Language Model</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">ProsodyMLM: Prosody Multi-modal Language Model</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Anonymous Authors</span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Under review</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="far fa-images"></i></span>
+                  <span>Data</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./static/images/teaser.png" class="figure" alt="Teaser: flat versus expressive commentary for the same moment.">
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">ProsodyMLM</span> watches <em>and</em> listens to a live game, then says
+        what happened &mdash; and <em>how</em> it should sound.
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3 has-text-centered">Listen: same clip, different commentators</h2>
+      <p class="has-text-centered carousel-hint">
+        Hit play, then switch tracks while the video keeps running. Every track stays in sync.
+        <span class="keys">Keys: <kbd>Space</kbd> play/pause &middot; <kbd>1</kbd>&ndash;<kbd>9</kbd> track &middot;
+        <kbd>&larr;</kbd><kbd>&rarr;</kbd> clip</span>
+      </p>
+      <div class="mt-carousel" data-set="highlight" aria-label="Demo clips"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Current multimodal systems can describe what happens in a video, but their commentary is
+            correct and flat: a goal and a throw-in are read out in the same voice. We introduce
+            <em>streaming multimodal prosodic commentary generation</em>, in which a model watches incoming
+            video and environmental audio and continuously produces commentary whose word-level prosody
+            &mdash; pitch, energy, duration, and pauses &mdash; tracks the importance of what it sees and hears.
+          </p>
+          <p>
+            To support this task, we build a dataset from sports broadcasts by separating commentary from
+            environmental sound and aligning each word with its prosody, the video frames, and the ambient
+            audio. We then propose <span class="dnerf">ProsodyMLM</span>, a streaming multimodal language model
+            with a multi-route LoRA prosody decoder that predicts discrete prosody tokens alongside text.
+            It is trained in two stages: first, text&ndash;prosody knowledge is distilled from ProsodyLM; then, the model is
+            fine-tuned on multimodal data. This keeps the pretrained backbone's abilities while grounding
+            expressiveness in visual events and crowd sound.
+          </p>
+          <p>
+            <span class="dnerf">ProsodyMLM</span> outperforms TTS, prosody-LM, and vision-conditioned baselines
+            on prosody-token RMSE, F0 RMSE, and emotion similarity. In LLM-as-a-judge and user studies on
+            World Cup footage, raters preferred it for overall quality and event&ndash;prosody alignment.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Method</h2>
+        <img src="./static/images/method.png" class="figure" alt="ProsodyMLM architecture overview."
+             data-missing="Export ProsodyMLM/fig/Method_v2.pdf to docs/static/images/method.png">
+        <div class="content has-text-justified">
+          <p>
+            A <strong>streaming multimodal encoder</strong> keeps every visual and environmental-audio token
+            for the current segment. Older segments are mean-pooled, so the history stays compact. A trainable
+            projector maps frozen audio-encoder features into the language model.
+          </p>
+          <p>
+            The <strong>prosody decoder</strong> represents each word as
+            <code>SIL, word, P1&hellip;P5</code>: preceding silence, phoneme duration, log-F<sub>0</sub> range,
+            median, and slope, and log-energy, each quantized into 513 bins. Prosody tokens get their own
+            embedding tables and a separate slot position encoding, which leaves the text RoPE unchanged. A
+            deterministic router sends each attribute through its own LoRA and 513-way head, so silence,
+            duration, pitch, and energy don't compete for the same gradients.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3 has-text-centered">Calm moments stay calm</h2>
+      <p class="has-text-centered carousel-hint">
+        Excitement has to show up at the right time. It shouldn't be there all the time.
+      </p>
+      <div class="mt-carousel" data-set="calm" aria-label="Non-highlight clips"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="dnerf">ProsodyMLM</span> builds on
+            <a href="#">StreamingVLM</a> for streaming video understanding and on
+            <a href="#">ProsodyLM</a> for discrete word-level prosody tokens.
+            We use <a href="#">SAM-Audio</a> to separate commentary from environmental sound.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{prosodymlm2027,
+  title     = {ProsodyMLM: Prosody Multi-modal Language Model},
+  author    = {Anonymous},
+  booktitle = {Under review},
+  year      = {2027}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link" href="#"><i class="fas fa-file-pdf"></i></a>
+      <a class="icon-link external-link" href="#"><i class="fab fa-github"></i></a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+            href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            Website template borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="./static/js/clips.js"></script>
+<script src="./static/js/player.js"></script>
+</body>
+</html>

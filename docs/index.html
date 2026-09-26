@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="ProsodyMLM: streaming multimodal commentary generation with prosody grounded in visual events and environmental sound.">
+        content="ProsodyMLM: prosodic video narration whose words and delivery are grounded in streaming video and environmental sound.">
   <meta name="keywords" content="ProsodyMLM, prosody, speech generation, multimodal, streaming, sports commentary">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ProsodyMLM: Prosody Multi-modal Language Model</title>
+  <title>ProsodyMLM: Prosodic Video Narration from Streaming Audio-Visual Events</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
@@ -21,7 +21,8 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">ProsodyMLM: Prosody Multi-modal Language Model</h1>
+          <h1 class="title is-1 publication-title">ProsodyMLM</h1>
+          <h2 class="title is-3 publication-subtitle">Prosodic Video Narration from Streaming Audio-Visual Events</h2>
           <div class="is-size-5 publication-authors">
             <span class="author-block">Anonymous Authors</span>
           </div>
@@ -30,34 +31,6 @@
             <span class="author-block">Under review</span>
           </div>
 
-          <div class="column has-text-centered">
-            <div class="publication-links">
-              <span class="link-block">
-                <a href="#" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
-                  <span>Paper</span>
-                </a>
-              </span>
-              <span class="link-block">
-                <a href="#" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon"><i class="ai ai-arxiv"></i></span>
-                  <span>arXiv</span>
-                </a>
-              </span>
-              <span class="link-block">
-                <a href="#" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon"><i class="fab fa-github"></i></span>
-                  <span>Code</span>
-                </a>
-              </span>
-              <span class="link-block">
-                <a href="#" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon"><i class="far fa-images"></i></span>
-                  <span>Data</span>
-                </a>
-              </span>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -67,10 +40,11 @@
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <img src="./static/images/teaser.png" class="figure" alt="Teaser: flat versus expressive commentary for the same moment.">
+      <img src="./static/images/teaser.jpg" class="figure"
+           alt="Messi walking into position over ambient sound gets calm narration; moments later he scores over cheering and the narration becomes highly expressive.">
       <h2 class="subtitle has-text-centered">
-        <span class="dnerf">ProsodyMLM</span> watches <em>and</em> listens to a live game, then says
-        what happened &mdash; and <em>how</em> it should sound.
+        <span class="dnerf">ProsodyMLM</span> watches <em>and</em> listens to a live stream, so it knows
+        not just <em>what</em> to say but <em>how</em> it should sound.
       </h2>
     </div>
   </div>
@@ -98,25 +72,23 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Current multimodal systems can describe what happens in a video, but their commentary is
-            correct and flat: a goal and a throw-in are read out in the same voice. We introduce
-            <em>streaming multimodal prosodic commentary generation</em>, in which a model watches incoming
-            video and environmental audio and continuously produces commentary whose word-level prosody
-            &mdash; pitch, energy, duration, and pauses &mdash; tracks the importance of what it sees and hears.
+            Compelling spoken narration needs the right words, and it needs prosody that reflects how much
+            the unfolding events matter. Existing streaming video models focus on <em>what</em> to say. Text-conditioned
+            speech models lack the perceptual context to decide <em>how</em> it should be said.
           </p>
           <p>
-            To support this task, we build a dataset from sports broadcasts by separating commentary from
-            environmental sound and aligning each word with its prosody, the video frames, and the ambient
-            audio. We then propose <span class="dnerf">ProsodyMLM</span>, a streaming multimodal language model
-            with a multi-route LoRA prosody decoder that predicts discrete prosody tokens alongside text.
-            It is trained in two stages: first, text&ndash;prosody knowledge is distilled from ProsodyLM; then, the model is
-            fine-tuned on multimodal data. This keeps the pretrained backbone's abilities while grounding
-            expressiveness in visual events and crowd sound.
+            We introduce <em>Prosodic Video Narration</em>, a new task: continuously generating spoken
+            descriptions whose content and prosody are grounded in streaming audio-visual events. To support it,
+            we build a sports commentary dataset with aligned video, environmental audio, commentary text, and
+            word-level prosodic annotations. We then propose <span class="dnerf">ProsodyMLM</span>, a streaming
+            multimodal language model that predicts discrete word-level prosody from audio-visual context.
+            Lightweight adapters and prosody injection keep autoregressive prosody prediction efficient. A two-stage
+            training strategy first transfers expressive speech capabilities, then grounds them in multimodal events.
           </p>
           <p>
-            <span class="dnerf">ProsodyMLM</span> outperforms TTS, prosody-LM, and vision-conditioned baselines
-            on prosody-token RMSE, F0 RMSE, and emotion similarity. In LLM-as-a-judge and user studies on
-            World Cup footage, raters preferred it for overall quality and event&ndash;prosody alignment.
+            In quantitative metrics and a user study, <span class="dnerf">ProsodyMLM</span>'s narration aligns better
+            with reference speech and with the underlying events than existing baselines do. It improves pitch, speaking-rate,
+            and emotional alignment while staying competitive on energy, with the largest gains during highly expressive moments.
           </p>
         </div>
       </div>
@@ -130,21 +102,57 @@
     <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3">Method</h2>
-        <img src="./static/images/method.png" class="figure" alt="ProsodyMLM architecture overview."
-             data-missing="Export ProsodyMLM/fig/Method_v2.pdf to docs/static/images/method.png">
+        <img src="./static/images/method.png" class="figure" alt="ProsodyMLM architecture: a streaming multimodal encoder feeding a VLM backbone with a word-level prosody decoder.">
         <div class="content has-text-justified">
           <p>
-            A <strong>streaming multimodal encoder</strong> keeps every visual and environmental-audio token
-            for the current segment. Older segments are mean-pooled, so the history stays compact. A trainable
-            projector maps frozen audio-encoder features into the language model.
+            A <strong>streaming multimodal encoder</strong> keeps fine-grained visual and environmental-audio tokens
+            for the current segment and mean-pools each older segment into a single token, so the history stays compact.
+            The vision encoder and the audio encoder are frozen. A trainable projector maps audio features into the
+            language model.
           </p>
           <p>
-            The <strong>prosody decoder</strong> represents each word as
-            <code>SIL, word, P1&hellip;P5</code>: preceding silence, phoneme duration, log-F<sub>0</sub> range,
-            median, and slope, and log-energy, each quantized into 513 bins. Prosody tokens get their own
-            embedding tables and a separate slot position encoding, which leaves the text RoPE unchanged. A
-            deterministic router sends each attribute through its own LoRA and 513-way head, so silence,
-            duration, pitch, and energy don't compete for the same gradients.
+            The <strong>prosody decoder</strong> predicts, for every word, its preceding silence and five prosodic
+            attributes (duration, pitch range, median, and slope, and energy) as discrete tokens. <em>Word-level
+            prosody injection</em> adds a shared prosody embedding, a word-index embedding, and an attribute-slot embedding
+            to the frozen word embedding. Prosody then rides on the existing word positions instead of being
+            interleaved as extra tokens, which keeps the sequence about 7&times; shorter than in ProsodyLM.
+            A prosody LoRA adapts the frozen VLM backbone to the new numerical output space.
+          </p>
+          <p>
+            <strong>Two-stage training.</strong> First, the model distills text&ndash;prosody knowledge from ProsodyLM
+            pseudo-labels. Then it is fine-tuned on aligned multimodal commentary, with an extra pass on a
+            balanced subset rich in exciting moments. The loss is cross-entropy plus a distance term that respects the ordering of prosody bins.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Results</h2>
+        <h3 class="title is-4">Prosody follows the scene</h3>
+        <img src="./static/images/qualitative.jpg" class="figure"
+             alt="Qualitative results: soccer and zero-shot parade clips with their environmental audio and the generated narration's waveform.">
+        <div class="content has-text-justified">
+          <p>
+            In soccer, routine passages get fairly neutral delivery, while salient moments with a roaring crowd
+            draw out more expressive, energetic prosody (top). Applied zero-shot to parade videos, the model
+            likewise raises its excitement when the crowd cheers (bottom). It picks up audio-visual event cues
+            that carry over beyond sports.
+          </p>
+        </div>
+        <h3 class="title is-4">User study</h3>
+        <img src="./static/images/user_study.png" class="figure user-study-figure"
+             alt="User study: ProsodyMLM preferred 43.6% vs 30.9% over Qwen3-TTS, and 57.3% vs 19.1% over ProsodyLM.">
+        <div class="content has-text-justified">
+          <p>
+            Listeners saw the reference video and its ground-truth narration, then picked which of two outputs
+            matched it better. <span class="dnerf">ProsodyMLM</span> was preferred over Qwen3-TTS 43.6% to 30.9%
+            (25.5% ties) and over ProsodyLM 57.3% to 19.1% (23.6% ties).
           </p>
         </div>
       </div>
@@ -173,8 +181,8 @@
           <p>
             <span class="dnerf">ProsodyMLM</span> builds on
             <a href="#">StreamingVLM</a> for streaming video understanding and on
-            <a href="#">ProsodyLM</a> for discrete word-level prosody tokens.
-            We use <a href="#">SAM-Audio</a> to separate commentary from environmental sound.
+            <a href="#">ProsodyLM</a> for discrete word-level prosody tokens, decoded to speech with
+            <a href="#">StyleTTS2</a>. We use <a href="#">SAM-Audio</a> to separate commentary from environmental sound.
           </p>
         </div>
       </div>
@@ -182,24 +190,8 @@
   </div>
 </section>
 
-<section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>@inproceedings{prosodymlm2027,
-  title     = {ProsodyMLM: Prosody Multi-modal Language Model},
-  author    = {Anonymous},
-  booktitle = {Under review},
-  year      = {2027}
-}</code></pre>
-  </div>
-</section>
-
 <footer class="footer">
   <div class="container">
-    <div class="content has-text-centered">
-      <a class="icon-link" href="#"><i class="fas fa-file-pdf"></i></a>
-      <a class="icon-link external-link" href="#"><i class="fab fa-github"></i></a>
-    </div>
     <div class="columns is-centered">
       <div class="column is-8">
         <div class="content">

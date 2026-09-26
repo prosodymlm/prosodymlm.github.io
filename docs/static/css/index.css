@@ -31,6 +31,16 @@ body {
   font-family: 'Google Sans', sans-serif;
 }
 
+.publication-subtitle {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 400;
+  margin-top: -0.75rem;
+}
+
+.user-study-figure {
+  max-width: 640px;
+}
+
 .publication-authors {
   font-family: 'Google Sans', sans-serif;
 }

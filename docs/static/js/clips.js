@@ -18,31 +18,27 @@
 window.TRACKS = [
   { id: "original", label: "Original broadcast", note: "Real commentator, as aired." },
   { id: "ours",     label: "ProsodyMLM (ours)",  ours: true, note: "Prosody from video + environmental sound." },
-  { id: "prosodylm_vision", label: "ProsodyLM-Vision", note: "ProsodyLM fine-tuned with visual features." },
   { id: "prosodylm", label: "ProsodyLM", note: "Text-only prosody; no video or audio context." },
   { id: "qwen3tts",  label: "Qwen3-TTS", note: "TTS from the ground-truth transcript with a commentary prompt." },
-  { id: "mute",      label: "Crowd only", note: "Environmental sound with the commentary removed." },
 ];
 
 window.CLIPS = {
   highlight: [
     {
-      title: "World Cup — stoppage-time goal",
+      title: "World Cup: stoppage-time goal",
       video: "static/videos/highlight_01.mp4",
       poster: "",
-      caption: "“…he shoots — and it's in! What a finish!”",
+      caption: "“…he shoots, and it's in! What a finish!”",
       default: "ours",
       audio: {
         original: "video",
         ours: "static/audio/highlight_01/ours.wav",
-        prosodylm_vision: "static/audio/highlight_01/prosodylm_vision.wav",
         prosodylm: "static/audio/highlight_01/prosodylm.wav",
         qwen3tts: "static/audio/highlight_01/qwen3tts.wav",
-        mute: "static/audio/highlight_01/env.wav",
       },
     },
     {
-      title: "NBA — fast-break dunk",
+      title: "NBA: fast-break dunk",
       video: "static/videos/highlight_02.mp4",
       caption: "",
       default: "ours",
@@ -57,7 +53,7 @@ window.CLIPS = {
 
   calm: [
     {
-      title: "World Cup — midfield build-up",
+      title: "World Cup: midfield build-up",
       video: "static/videos/calm_01.mp4",
       caption: "",
       default: "ours",

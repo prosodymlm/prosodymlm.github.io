@@ -36,9 +36,17 @@
     return m + ":" + String(s).padStart(2, "0");
   }
 
+  const METRICS = [
+    { key: "f0_corr", label: "F0 corr", higher: true },
+    { key: "en_corr", label: "Energy corr", higher: true },
+    { key: "d_span", label: "\u0394Span", higher: false },
+    { key: "d_med", label: "\u0394Median", higher: false },
+  ];
+
   class ClipPlayer {
     constructor(clip, trackDefs) {
       this.clip = clip;
+      this.trackDefs = trackDefs;
       this.audioMap = clip.audio || {};
       this.tracks = trackDefs.filter((t) => this.audioMap[t.id]);
       this.activeId = this.audioMap[clip.default] ? clip.default : (this.tracks[0] && this.tracks[0].id);
@@ -59,6 +67,12 @@
 
     build() {
       const root = (this.root = el("div", "mt-player"));
+
+      if (this.clip.blurb) {
+        const blurb = el("p", "mt-blurb");
+        blurb.textContent = this.clip.blurb;
+        root.appendChild(blurb);
+      }
 
       const stage = (this.stage = el("div", "mt-stage"));
       const video = (this.video = el("video", "", { playsinline: "", preload: "none" }));
@@ -148,6 +162,101 @@
         cap.textContent = this.clip.caption;
         root.appendChild(cap);
       }
+
+      this.buildDetails();
+    }
+
+    // Transcript, per-clip metrics, and F0 plot under the player.
+    buildDetails() {
+      const clip = this.clip;
+      this.lines = [];
+      if (!clip.sentences && !clip.metrics && !clip.plot) return;
+      const details = el("div", "mt-details");
+
+      if (clip.sentences && clip.sentences.length) {
+        const col = el("div", "mt-transcript-col");
+        const h = el("h4", "mt-subhead");
+        h.textContent = "Transcript";
+        const list = el("ol", "mt-transcript");
+        clip.sentences.forEach((s, i) => {
+          const li = el("li");
+          const btn = el("button", "", { type: "button" });
+          const n = el("span", "mt-line-num");
+          n.textContent = i + 1;
+          const text = el("span");
+          text.textContent = s.text;
+          btn.append(n, text);
+          btn.addEventListener("click", () => this.seekTo(s.start, true));
+          li.appendChild(btn);
+          list.appendChild(li);
+          this.lines.push(li);
+        });
+        col.append(h, list);
+        details.appendChild(col);
+      }
+
+      if (clip.metrics) {
+        const col = el("div", "mt-metrics-col");
+        const h = el("h4", "mt-subhead");
+        h.textContent = "Similarity to the original broadcast";
+        const table = el("table", "mt-metrics");
+        const head = el("tr");
+        head.appendChild(el("th"));
+        METRICS.forEach((m) => {
+          const th = el("th");
+          th.textContent = m.label + (m.higher ? " \u2191" : " \u2193");
+          head.appendChild(th);
+        });
+        const thead = el("thead");
+        thead.appendChild(head);
+        const tbody = el("tbody");
+        const ids = this.trackDefs.map((t) => t.id).filter((id) => clip.metrics[id]);
+        const best = {};
+        METRICS.forEach((m) => {
+          const vals = ids.map((id) => clip.metrics[id][m.key]);
+          best[m.key] = m.higher ? Math.max(...vals) : Math.min(...vals);
+        });
+        ids.forEach((id) => {
+          const def = this.trackDefs.find((t) => t.id === id);
+          const tr = el("tr", def.ours ? "is-ours" : "");
+          const name = el("td");
+          name.textContent = def.label;
+          tr.appendChild(name);
+          METRICS.forEach((m) => {
+            const v = clip.metrics[id][m.key];
+            const td = el("td", v === best[m.key] ? "is-best" : "");
+            td.textContent = Number.isFinite(v) ? v.toFixed(2) : "\u2013";
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+        table.append(thead, tbody);
+        const note = el("p", "mt-metrics-note");
+        note.textContent = "Correlation of the pitch (F0) and energy contours with the original broadcast, and the difference in " +
+          "pitch span and median pitch. Best value underlined.";
+        col.append(h, table, note);
+        details.appendChild(col);
+      }
+
+      this.root.appendChild(details);
+
+      if (clip.plot) {
+        const fig = el("figure", "mt-plot");
+        const img = el("img", "", { src: clip.plot, loading: "lazy", alt: "Per-sentence pitch contours for " + (clip.title || "this clip") });
+        const cap = el("figcaption");
+        cap.textContent = "Per-sentence pitch (F0) contours, each version time-aligned to the original broadcast. " +
+          "Original in black, ProsodyMLM in orange.";
+        fig.append(img, cap);
+        this.root.appendChild(fig);
+      }
+    }
+
+    updateTranscript() {
+      if (!this.lines.length) return;
+      const t = this.video.currentTime;
+      this.clip.sentences.forEach((s, i) => {
+        this.lines[i].classList.toggle("is-current", t >= s.start && t < s.end);
+      });
     }
 
     // ---------- media wiring ----------
@@ -235,6 +344,7 @@
       v.addEventListener("timeupdate", () => {
         this.correctDrift();
         this.updateTime();
+        this.updateTranscript();
       });
       v.addEventListener("loadedmetadata", () => this.updateTime());
       v.addEventListener("error", () => {
@@ -292,6 +402,18 @@
       this.resumeAfterBuffer = false;
       if (!this.video.paused) this.video.pause();
       this.pauseAudio();
+    }
+
+    seekTo(t, andPlay) {
+      this.load();
+      const go = () => {
+        this.video.currentTime = t;
+        this.updateTime();
+        this.updateTranscript();
+        if (andPlay && this.video.paused) this.play();
+      };
+      if (this.video.readyState >= 1) go();
+      else this.video.addEventListener("loadedmetadata", go, { once: true });
     }
 
     toggle() {

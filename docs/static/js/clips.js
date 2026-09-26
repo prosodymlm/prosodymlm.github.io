@@ -29,7 +29,7 @@ window.TRACKS = [
 window.CLIPS = {
   samples: [
     {
-      title: "World Cup 2006: free kick to goal",
+      title: "World Cup: free kick to goal",
       blurb: "A calm set-piece description builds to the goal call as the stadium erupts.",
       video: "static/videos/sample_01.mp4",
       poster: "static/images/sample_01_poster.jpg",
@@ -59,7 +59,7 @@ window.CLIPS = {
       plot: "static/images/f0/sample_01.png"
     },
     {
-      title: "World Cup 2006: celebration and replay",
+      title: "World Cup: celebration and replay",
       blurb: "Right after the goal: an animated description of the celebration, then calmer analysis of the replay.",
       video: "static/videos/sample_02.mp4",
       poster: "static/images/sample_02_poster.jpg",

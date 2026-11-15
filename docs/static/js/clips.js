@@ -124,7 +124,7 @@ window.CLIPS = {
 
   long: [
     {
-      title: "World Cup 2006: Germany vs Italy, end of extra time",
+      title: "World Cup: Germany vs Italy, end of extra time",
       blurb: "The final minutes of the semi-final, from Italy's late goal through the celebrations.",
       video: "static/videos/long_02.mp4",
       poster: "static/images/long_02_poster.jpg",
@@ -137,7 +137,7 @@ window.CLIPS = {
       }
     },
     {
-      title: "World Cup 2006: Brazil vs France, second half",
+      title: "World Cup: Brazil vs France, second half",
       blurb: "Two minutes of open play with France 1-0 up, narrated continuously from the stream.",
       video: "static/videos/long_01.mp4",
       poster: "static/images/long_01_poster.jpg",

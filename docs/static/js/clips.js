@@ -121,4 +121,33 @@ window.CLIPS = {
       plot: "static/images/f0/sample_03.png"
     }
   ],
+
+  long: [
+    {
+      title: "World Cup 2006: Germany vs Italy, end of extra time",
+      blurb: "The final minutes of the semi-final, from Italy's late goal through the celebrations.",
+      video: "static/videos/long_02.mp4",
+      poster: "static/images/long_02_poster.jpg",
+      default: "ours",
+      audio: {
+        original: "video",
+        ours: "static/audio/long_02/ours.m4a",
+        prosodylm: "static/audio/long_02/prosodylm.m4a",
+        qwen3tts: "static/audio/long_02/qwen3tts.m4a"
+      }
+    },
+    {
+      title: "World Cup 2006: Brazil vs France, second half",
+      blurb: "Two minutes of open play with France 1-0 up, narrated continuously from the stream.",
+      video: "static/videos/long_01.mp4",
+      poster: "static/images/long_01_poster.jpg",
+      default: "ours",
+      audio: {
+        original: "video",
+        ours: "static/audio/long_01/ours.m4a",
+        prosodylm: "static/audio/long_01/prosodylm.m4a",
+        qwen3tts: "static/audio/long_01/qwen3tts.m4a"
+      }
+    }
+  ],
 };

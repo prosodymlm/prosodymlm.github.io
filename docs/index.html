@@ -16,19 +16,27 @@
 </head>
 <body>
 
-<section class="hero">
+<section class="hero hero-top">
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">Prosodic Video Narration from Streaming Audio-Visual Events</h1>
+          <h1 class="title is-1 publication-title"><span class="title-accent">Prosodic Video Narration</span> from Streaming Audio-Visual Events</h1>
           <div class="is-size-5 publication-authors">
             <span class="author-block">Anonymous Authors</span>
           </div>
 
-          <div class="is-size-5 publication-authors">
-            <span class="author-block">Under review</span>
+          <div class="publication-venue">
+            <span class="venue-pill">Under review</span>
           </div>
+
+          <nav class="page-nav" aria-label="Sections">
+            <a class="is-primary" href="#demo"><span class="icon"><i class="fas fa-play"></i></span>Demo</a>
+            <a href="#long-form"><span class="icon"><i class="fas fa-clock"></i></span>Long-form</a>
+            <a href="#abstract"><span class="icon"><i class="fas fa-file-lines"></i></span>Abstract</a>
+            <a href="#method"><span class="icon"><i class="fas fa-diagram-project"></i></span>Method</a>
+            <a href="#results"><span class="icon"><i class="fas fa-chart-column"></i></span>Results</a>
+          </nav>
 
         </div>
       </div>
@@ -49,7 +57,7 @@
   </div>
 </section>
 
-<section class="hero is-light is-small">
+<section class="hero is-light is-small listen-band" id="demo">
   <div class="hero-body">
     <div class="container">
       <h2 class="title is-3 has-text-centered">Listen: same clip, different narrators</h2>
@@ -64,7 +72,19 @@
   </div>
 </section>
 
-<section class="section">
+<section class="hero is-light is-small listen-band listen-band-next" id="long-form">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3 has-text-centered">Long-form: two-minute windows</h2>
+      <p class="has-text-centered carousel-hint">
+        Continuous narration over two uninterrupted minutes of broadcast, including quiet build-up and sudden key moments.
+      </p>
+      <div class="mt-carousel" data-set="long" aria-label="Long-form clips"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="abstract">
   <div class="container is-max-desktop">
     <!-- Abstract. -->
     <div class="columns is-centered has-text-centered">
@@ -97,7 +117,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="method">
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width">
@@ -129,7 +149,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="results">
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width">
